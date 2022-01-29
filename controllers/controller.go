@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"log"
 )
 
-func Halo(c *fiber.Ctx) error {
+func Line(c *fiber.Ctx) error {
+	log.Println(c.Body())
 	return c.SendString("Halo")
 }
