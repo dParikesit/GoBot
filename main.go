@@ -14,7 +14,7 @@ func main() {
 	})
 
 	v1 := app.Group("/api/line")
-	v1.Get("/", controllers.Halo)
+	v1.Post("/", controllers.Halo)
 
 	port := os.Getenv("PORT")
 	if port == "" {
