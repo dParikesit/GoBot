@@ -16,7 +16,7 @@ func main() {
 	v1 := app.Group("/api/v1")
 	v1.Get("/halo", controllers.Halo)
 
-	port := os.Getenv("port")
+	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
 	}
