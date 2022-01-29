@@ -14,6 +14,6 @@ func Line(c *fiber.Ctx) error {
 		fmt.Println("Error")
 	}
 
-	fmt.Println(result.Events.Type)
+	fmt.Println(result.Destination)
 	return c.SendString("Halo")
 }
