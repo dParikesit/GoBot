@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/dParikesit/dimsBot/controllers"
 	"github.com/gofiber/fiber/v2"
+	"os"
 )
 
 func main() {
@@ -15,5 +16,9 @@ func main() {
 	v1 := app.Group("/api/v1")
 	v1.Get("/halo", controllers.Halo)
 
-	app.Listen(":3000")
+	port := os.Getenv("port")
+	if port == "" {
+		port = "3000"
+	}
+	app.Listen(":" + port)
 }
