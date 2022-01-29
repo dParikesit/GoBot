@@ -13,8 +13,8 @@ func main() {
 		return c.SendString("The World!")
 	})
 
-	v1 := app.Group("/api/v1")
-	v1.Get("/halo", controllers.Halo)
+	v1 := app.Group("/api/line")
+	v1.Get("/", controllers.Halo)
 
 	port := os.Getenv("PORT")
 	if port == "" {
