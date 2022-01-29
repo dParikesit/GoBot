@@ -10,8 +10,8 @@ var Bot *linebot.Client
 var err error
 
 type WebhookEvent struct {
-	Destination string `json:"destination"`
-	Events      Event  `json:"events"`
+	Destination string  `json:"destination"`
+	Events      []Event `json:"events"`
 }
 
 type Event struct {
