@@ -26,7 +26,8 @@ func main() {
 	app.Post("/api/line", adaptor.HTTPHandlerFunc(handlers.Line))
 
 	reminder := app.Group("/api/reminder")
-	reminder.Post("/all", handlers.GetAll)
+	reminder.Get("/all", handlers.GetAll)
+	reminder.Post("/all", handlers.AddData)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -22,3 +22,8 @@ func GetBool(isDone bool) []models.Reminder {
 
 	return reminders
 }
+
+func InsertOne(data *models.Reminder) error {
+	result := utils.Db.Create(data)
+	return result.Error
+}

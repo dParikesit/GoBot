@@ -50,3 +50,17 @@ func GetAll(c *fiber.Ctx) error {
 
 	return c.JSON(reminders)
 }
+
+func AddData(c *fiber.Ctx) error {
+	dataTemp := new(models.ReminderTemp)
+	if err := c.BodyParser(dataTemp); err != nil {
+		return c.Status(500).JSON(err)
+	}
+	data, err := dataTemp.ConvTime()
+	if err != nil {
+		return c.Status(500).JSON(err)
+	}
+
+	log.Println(data)
+	return c.JSON(data)
+}
