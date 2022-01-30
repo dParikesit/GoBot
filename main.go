@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dParikesit/dimsBot/controllers"
+	"github.com/dParikesit/dimsBot/handlers"
 	"github.com/dParikesit/dimsBot/utils"
 	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
@@ -18,12 +18,15 @@ func main() {
 
 	app := fiber.New()
 	utils.ConnectLine()
+	utils.ConnectSupabase()
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("The World!")
 	})
+	app.Post("/api/line", adaptor.HTTPHandlerFunc(handlers.Line))
 
-	app.Post("/api/line", adaptor.HTTPHandlerFunc(controllers.Line))
+	reminder := app.Group("/api/reminder")
+	reminder.Post("/all", handlers.GetAll)
 
 	port := os.Getenv("PORT")
 	if port == "" {
