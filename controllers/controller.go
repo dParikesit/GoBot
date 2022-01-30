@@ -6,7 +6,7 @@ import (
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 	"log"
 	"net/http"
-	"strconv"
+	"strings"
 )
 
 func Line(w http.ResponseWriter, r *http.Request) {
@@ -19,13 +19,14 @@ func Line(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				quota, err := utils.Bot.GetMessageQuota().Do()
-				if err != nil {
-					log.Println("Quota err:", err)
+				kalimat := strings.SplitN(message.Text, " ", 3)
+				log.Println(kalimat[1])
+				if kalimat[0] == "!remindme" {
+					if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(" OK! We will remind you")).Do(); err != nil {
+						log.Print(err)
+					}
 				}
-				if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.ID+":"+message.Text+" OK! remain message:"+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
-					log.Print(err)
-				}
+
 			}
 		}
 	}
