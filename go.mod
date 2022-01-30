@@ -7,6 +7,8 @@ require (
 	github.com/gofiber/fiber/v2 v2.25.0
 	github.com/joho/godotenv v1.4.0
 	github.com/line/line-bot-sdk-go/v7 v7.12.0
+	gorm.io/driver/postgres v1.2.3
+	gorm.io/gorm v1.22.5
 )
 
 require (
@@ -29,6 +31,4 @@ require (
 	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
 	golang.org/x/sys v0.0.0-20220128215802-99c3d69c2c27 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gorm.io/driver/postgres v1.2.3 // indirect
-	gorm.io/gorm v1.22.5 // indirect
 )
