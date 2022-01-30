@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func Line(w http.ResponseWriter, r *http.Request) {
@@ -24,9 +25,19 @@ func Line(w http.ResponseWriter, r *http.Request) {
 			case *linebot.TextMessage:
 				kalimat := strings.SplitN(message.Text, " ", 3)
 				if kalimat[0] == "!remindme" {
+					schedule, _ := time.Parse("02/01/2006", kalimat[1])
+					reminder := models.Reminder{
+						Schedule:    schedule,
+						Description: kalimat[2],
+						Done:        false,
+					}
+
+					if err = controllers.InsertOne(&reminder); err != nil {
+						log.Println(err)
+					}
 
 					if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(" OK! We will remind you")).Do(); err != nil {
-						log.Print(err)
+						log.Println(err)
 					}
 				}
 
