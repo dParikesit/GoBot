@@ -1,19 +1,26 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/dParikesit/dimsBot/utils"
-	"github.com/gofiber/fiber/v2"
+	"github.com/line/line-bot-sdk-go/v7/linebot"
+	"log"
+	"net/http"
 )
 
-func Line(c *fiber.Ctx) error {
-	var result utils.WebhookEvent
-	err := json.Unmarshal(c.Body(), &result)
+func Line(w http.ResponseWriter, r *http.Request) {
+	events, err := utils.Bot.ParseRequest(r)
 	if err != nil {
-		fmt.Println("Error")
+		fmt.Fprint(w, "Parse failed")
 	}
 
-	fmt.Println(result.Destination)
-	return c.SendString("Halo")
+	for _, event := range events {
+		if event.Type == linebot.EventTypeMessage {
+			log.Println(event.Message)
+			log.Println(event.Message.Type())
+			log.Println(event.Message.Message)
+		}
+	}
+
+	fmt.Fprint(w, "Hello World!")
 }

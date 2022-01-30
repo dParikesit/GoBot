@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/dParikesit/dimsBot/controllers"
 	"github.com/dParikesit/dimsBot/utils"
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"log"
@@ -21,7 +22,8 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("The World!")
 	})
-	app.Post("/api/line", controllers.Line)
+
+	app.Post("/api/line", adaptor.HTTPHandlerFunc(controllers.Line))
 
 	port := os.Getenv("PORT")
 	if port == "" {
