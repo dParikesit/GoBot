@@ -24,9 +24,19 @@ func Line(w http.ResponseWriter, r *http.Request) {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
 				kalimat := strings.SplitN(message.Text, " ", 3)
+				var uid string
+				if event.Source.Type == "room" {
+					uid = event.Source.RoomID
+				} else if event.Source.Type == "group" {
+					uid = event.Source.GroupID
+				} else {
+					uid = event.Source.UserID
+				}
+
 				if kalimat[0] == "!remindme" {
 					schedule, _ := time.Parse("02/01/2006", kalimat[1])
 					reminder := models.Reminder{
+						UserId:      uid,
 						Schedule:    schedule,
 						Description: kalimat[2],
 						Done:        false,
@@ -40,7 +50,7 @@ func Line(w http.ResponseWriter, r *http.Request) {
 						log.Println(err)
 					}
 				} else if kalimat[0] == "!todo" {
-					reminders := controllers.GetBool(false)
+					reminders := controllers.GetBool(uid, false)
 					answer := ""
 					for _, reminder := range reminders {
 						answer = answer + reminder.Schedule.Format("02/01") + " " + reminder.Description + "\n"
@@ -61,16 +71,7 @@ func Line(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAll(c *fiber.Ctx) error {
-	var reminders []models.Reminder
-
-	if c.Query("done") == "false" {
-		reminders = controllers.GetBool(false)
-	} else if c.Query("done") == "true" {
-		reminders = controllers.GetBool(true)
-	} else {
-		reminders = controllers.GetAll()
-	}
-
+	reminders := controllers.GetAll()
 	return c.JSON(reminders)
 }
 
