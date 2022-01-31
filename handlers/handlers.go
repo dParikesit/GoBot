@@ -51,13 +51,19 @@ func Line(w http.ResponseWriter, r *http.Request) {
 					}
 				} else if kalimat[0] == "!todo" {
 					reminders := controllers.GetBool(uid, false)
-					answer := ""
-					for _, reminder := range reminders {
-						answer = answer + reminder.Schedule.Format("02/01") + " " + reminder.Description + "\n"
-					}
+					if len(reminders) != 0 {
+						answer := ""
+						for _, reminder := range reminders {
+							answer = answer + reminder.Schedule.Format("02/01") + " " + reminder.Description + "\n"
+						}
 
-					if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(answer)).Do(); err != nil {
-						log.Println(err)
+						if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(answer)).Do(); err != nil {
+							log.Println(err)
+						}
+					} else {
+						if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Tidak ada todo list! Hore!!!")).Do(); err != nil {
+							log.Println(err)
+						}
 					}
 
 				} else if kalimat[0] == "!tagall" {
