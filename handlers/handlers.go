@@ -43,7 +43,7 @@ func Line(w http.ResponseWriter, r *http.Request) {
 					reminders := controllers.GetBool(false)
 					answer := ""
 					for _, reminder := range reminders {
-						answer = answer + reminder.Schedule.Format("02/01/2006") + " " + reminder.Description + "\n"
+						answer = answer + reminder.Schedule.Format("02/01") + " " + reminder.Description + "\n"
 					}
 
 					if _, err = utils.Bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(answer)).Do(); err != nil {
